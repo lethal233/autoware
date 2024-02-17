@@ -1,0 +1,195 @@
+# Install Autoware-related messages on host machine
+
+## Requirements
+
+- ROS2 humble
+- package build dependency
+
+```sh
+pip install catkin_pkg lark empy==3.3.4
+sudo apt-get install ros-humble-geographic-msgs
+```
+
+## Clone this repo
+
+```sh
+git clone -b msgs_install --single-branch https://github.com/lethal233/autoware.git
+```
+
+## import vcs repos
+
+```sh
+cd autoware
+mkdir src
+vcs import src < autoware.repos
+vcs import src < simulator.repos
+```
+
+## Modifications
+
+1. Modify `autoware/src/universe/autoware.universe/planning/planning_validator/CMakeLists.txt` to:
+
+```makefile
+cmake_minimum_required(VERSION 3.22)
+project(planning_validator)
+find_package(ament_cmake_auto REQUIRED)
+ament_auto_find_build_dependencies()
+
+rosidl_generate_interfaces(
+  ${PROJECT_NAME}
+  "msg/PlanningValidatorStatus.msg"
+  DEPENDENCIES builtin_interfaces
+)
+ament_auto_package()
+```
+
+2. Modify `autoware/src/universe/autoware.universe/planning/planning_validator/package.xml` to:
+
+```xml
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>planning_validator</name>
+  <version>0.1.0</version>
+  <description>ros node for planning_validator</description>
+  <maintainer email="takamasa.horibe@tier4.jp">Takamasa Horibe</maintainer>
+  <maintainer email="kosuke.takeuchi@tier4.jp">Kosuke Takeuchi</maintainer>
+  <license>Apache License 2.0</license>
+
+  <author email="takamasa.horibe@tier4.jp">Takamasa Horibe</author>
+  <author email="yutaka.shimizu@tier4.jp">Yutaka Shimizu</author>
+
+  <buildtool_depend>ament_cmake_auto</buildtool_depend>
+  <!-- <buildtool_depend>autoware_cmake</buildtool_depend> -->
+  <build_depend>rosidl_default_generators</build_depend>
+
+  <depend>autoware_auto_planning_msgs</depend>
+  <!-- <depend>diagnostic_updater</depend> -->
+  <depend>geometry_msgs</depend>
+  <!-- <depend>motion_utils</depend> -->
+  <depend>nav_msgs</depend>
+  <!-- <depend>planning_test_utils</depend> -->
+  <!-- <depend>rclcpp</depend> -->
+  <!-- <depend>rclcpp_components</depend> -->
+  <!-- <depend>tier4_autoware_utils</depend> -->
+  <!-- <depend>vehicle_info_util</depend> -->
+  <depend>visualization_msgs</depend>
+
+  <!-- <test_depend>ament_cmake_ros</test_depend>
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>autoware_lint_common</test_depend> -->
+
+  <exec_depend>rosidl_default_runtime</exec_depend>
+  <member_of_group>rosidl_interface_packages</member_of_group>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
+
+```
+
+3. Modify `autoware/src/universe/autoware.universe/control/vehicle_cmd_gate/CMakeLists.txt` to:
+```makefile
+cmake_minimum_required(VERSION 3.5)
+project(vehicle_cmd_gate)
+find_package(rosidl_default_generators REQUIRED)
+find_package(builtin_interfaces REQUIRED)
+
+rosidl_generate_interfaces(
+  ${PROJECT_NAME}
+  "msg/IsFilterActivated.msg"
+  DEPENDENCIES builtin_interfaces
+)
+
+ament_export_dependencies(rosidl_default_runtime)
+ament_package()
+
+```
+
+4. Modify `autoware/src/universe/autoware.universe/control/vehicle_cmd_gate/package.xml` to:
+
+```xml
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>vehicle_cmd_gate</name>
+  <version>0.1.0</version>
+  <description>The vehicle_cmd_gate package</description>
+  <maintainer email="takamasa.horibe@tier4.jp">Takamasa Horibe</maintainer>
+  <maintainer email="tomoya.kimura@tier4.jp">Tomoya Kimura</maintainer>
+  <license>Apache License 2.0</license>
+
+  <author email="hiroki.ota@tier4.jp">Hiroki OTA</author>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <!-- <buildtool_depend>autoware_cmake</buildtool_depend> -->
+
+  <build_depend>rosidl_default_generators</build_depend>
+
+  <depend>autoware_adapi_v1_msgs</depend>
+  <depend>autoware_auto_control_msgs</depend>
+  <depend>autoware_auto_system_msgs</depend>
+  <depend>autoware_auto_vehicle_msgs</depend>
+  <!-- <depend>component_interface_specs</depend>
+  <depend>component_interface_utils</depend>
+  <depend>diagnostic_updater</depend> -->
+  <depend>geometry_msgs</depend>
+  <!-- <depend>motion_utils</depend>
+  <depend>rclcpp</depend>
+  <depend>rclcpp_components</depend>
+  <depend>std_srvs</depend>
+  <depend>tier4_api_utils</depend> -->
+  <depend>tier4_control_msgs</depend>
+  <depend>tier4_debug_msgs</depend>
+  <depend>tier4_external_api_msgs</depend>
+  <depend>tier4_system_msgs</depend>
+  <depend>tier4_vehicle_msgs</depend>
+  <!-- <depend>vehicle_info_util</depend> -->
+  <depend>visualization_msgs</depend>
+
+  <exec_depend>rosidl_default_runtime</exec_depend>
+
+  <test_depend>ament_cmake_ros</test_depend>
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>autoware_lint_common</test_depend>
+
+  <member_of_group>rosidl_interface_packages</member_of_group>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
+
+```
+
+## Build packages
+
+```sh
+
+cd /opt/ros/humble && source setup.bash
+
+cd /path/to/autoware
+
+colcon build --packages-select $(colcon list | awk '{print $1}' | grep 'msgs$') --symlink-install
+
+colcon build --packages-select vehicle_cmd_gate planning_validator --symlink-install
+```
+
+It takes ~15 minutes to build these packages on 4-core CPU. 
+
+## Source the environment
+
+```sh
+source install/setup.bash
+```
+
+## Usage in Python
+
+```python
+from autoware_auto_planning_msgs.msg import Trajectory
+from rclpy.serialization import deserialize_message
+
+# TODO
+```
+
