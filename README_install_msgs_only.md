@@ -310,10 +310,54 @@ source install/setup.bash
 
 ## Usage in Python
 
+### Read rosbag files
+
+```python
+import sqlite3
+from rosidl_runtime_py.utilities import get_message
+from rclpy.serialization import deserialize_message
+import sys
+import argparse
+
+
+
+class BagFileParser():
+    def __init__(self, bag_file):
+        self.bag_file = bag_file
+        self.conn = sqlite3.connect(bag_file)
+        self.cursor = self.conn.cursor()
+
+        topics_data = self.cursor.execute("SELECT id, name, type FROM topics").fetchall()
+        self.topic_msg_message = {name_of:get_message(type_of) for id_of, name_of, type_of in topics_data}
+        
+        self.fetch_all_msgs_sql = "select topics.name as topic, data as message, timestamp as t from messages join topics on messages.topic_id = topics.id order by timestamp desc";
+
+    def __del__(self):
+        self.conn.close()
+
+    def read_messages(self):
+        rows = self.cursor.execute(self.fetch_all_msgs_sql).fetchall()
+        return rows
+    
+    def deserialize_data(self, data, topic_name):
+        return deserialize_message(data, self.topic_msg_message[topic_name])
+
+if __name__ == '__main__':
+    f = BagFileParser("/path/to/rosbag_record_file")
+    for topic, message, t in f.read_messages():
+        if topic in interest_topics:
+            msg = f.deserialize_data(message, topic)
+
+```
+
+### import Autoware data type
+
 ```python
 from autoware_auto_planning_msgs.msg import Trajectory
-from rclpy.serialization import deserialize_message
-
-# TODO
+import autoware_auto_perception_msgs.msg
+import geometry_msgs.msg
+import nav_msgs.msg
+# ...
+# ...
 ```
 
