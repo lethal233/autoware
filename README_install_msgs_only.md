@@ -163,6 +163,130 @@ ament_package()
 
 ```
 
+5. Modify `autoware/src/universe/autoware.universe/control/control_validator/CMakeLists.txt` to:
+```makefile
+cmake_minimum_required(VERSION 3.22)
+project(control_validator)
+find_package(rosidl_default_generators REQUIRED)
+find_package(builtin_interfaces REQUIRED)
+
+rosidl_generate_interfaces(
+  ${PROJECT_NAME}
+  "msg/ControlValidatorStatus.msg"
+  DEPENDENCIES builtin_interfaces
+)
+
+ament_export_dependencies(rosidl_default_runtime)
+ament_package()
+```
+
+6. Modify `autoware/src/universe/autoware.universe/control/control_validator/package.xml` to:
+```xml
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>control_validator</name>
+  <version>0.1.0</version>
+  <description>ros node for control_validator</description>
+  <maintainer email="kyoichi.sugahara@tier4.jp">Kyoichi Sugahara</maintainer>
+  <maintainer email="takamasa.horibe@tier4.jp">Takamasa Horibe</maintainer>
+  <maintainer email="makoto.kurihara@tier4.jp">Makoto Kurihara</maintainer>
+  <license>Apache License 2.0</license>
+
+  <author email="kyoichi.sugahara@tier4.jp">Kyoichi Sugahara</author>
+  <author email="takamasa.horibe@tier4.jp">Takamasa Horibe</author>
+  <author email="makoto.kurihara@tier4.jp">Makoto Kurihara</author>
+
+  <buildtool_depend>ament_cmake_auto</buildtool_depend>
+  <buildtool_depend>autoware_cmake</buildtool_depend>
+  <build_depend>rosidl_default_generators</build_depend>
+
+  <depend>autoware_auto_planning_msgs</depend>
+  <!-- <depend>diagnostic_updater</depend> -->
+  <depend>geometry_msgs</depend>
+  <!-- <depend>motion_utils</depend> -->
+  <depend>nav_msgs</depend>
+  <!-- <depend>rclcpp</depend> -->
+  <!-- <depend>rclcpp_components</depend> -->
+  <!-- <depend>tier4_autoware_utils</depend> -->
+  <!-- <depend>vehicle_info_util</depend> -->
+  <depend>visualization_msgs</depend>
+
+  <test_depend>ament_cmake_ros</test_depend>
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>autoware_lint_common</test_depend>
+
+  <exec_depend>rosidl_default_runtime</exec_depend>
+  <member_of_group>rosidl_interface_packages</member_of_group>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
+```
+
+7. Modify `autoware/src/universe/autoware.universe/control/operation_mode_transition_manager/CMakeLists.txt` to:
+```makefile
+cmake_minimum_required(VERSION 3.14)
+project(operation_mode_transition_manager)
+
+find_package(ament_cmake_auto REQUIRED)
+ament_auto_find_build_dependencies()
+
+rosidl_generate_interfaces(
+  ${PROJECT_NAME}
+  "msg/OperationModeTransitionManagerDebug.msg"
+  DEPENDENCIES builtin_interfaces
+)
+ament_auto_package()
+```
+
+8. Modify `autoware/src/universe/autoware.universe/control/operation_mode_transition_manager/package.xml` to:
+
+```xml
+<package format="3">
+  <name>operation_mode_transition_manager</name>
+  <version>0.1.0</version>
+  <description>The vehicle_cmd_gate package</description>
+  <maintainer email="takamasa.horibe@tier4.jp">Takamasa Horibe</maintainer>
+  <maintainer email="tomoya.kimura@tier4.jp">Tomoya Kimura</maintainer>
+  <license>Apache License 2.0</license>
+
+  <author email="takamasa.horibe@tier4.jp">Takamasa Horibe</author>
+
+  <buildtool_depend>autoware_cmake</buildtool_depend>
+  <build_depend>rosidl_default_generators</build_depend>
+
+  <depend>autoware_auto_control_msgs</depend>
+  <depend>autoware_auto_system_msgs</depend>
+  <depend>autoware_auto_vehicle_msgs</depend>
+  <!-- <depend>component_interface_specs</depend>
+  <depend>component_interface_utils</depend> -->
+  <depend>geometry_msgs</depend>
+  <!-- <depend>motion_utils</depend>
+  <depend>rclcpp</depend>
+  <depend>rclcpp_components</depend> -->
+  <depend>std_srvs</depend>
+  <!-- <depend>tier4_autoware_utils</depend> -->
+  <depend>tier4_control_msgs</depend>
+  <depend>tier4_system_msgs</depend>
+  <depend>tier4_vehicle_msgs</depend>
+  <!-- <depend>vehicle_info_util</depend> -->
+
+  <!-- <test_depend>ament_cmake_gtest</test_depend>
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>autoware_lint_common</test_depend> -->
+
+  <exec_depend>rosidl_default_runtime</exec_depend>
+  <member_of_group>rosidl_interface_packages</member_of_group>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
+```
+
+
 ## Build packages
 
 ```sh
@@ -173,7 +297,7 @@ cd /path/to/autoware
 
 colcon build --packages-select $(colcon list | awk '{print $1}' | grep 'msgs$') --symlink-install
 
-colcon build --packages-select vehicle_cmd_gate planning_validator --symlink-install
+colcon build --packages-select vehicle_cmd_gate planning_validator control_validator operation_mode_transition_manager --symlink-install
 ```
 
 It takes ~15 minutes to build these packages on 4-core CPU. 
