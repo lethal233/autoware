@@ -7,7 +7,7 @@
 
 ```sh
 pip install catkin_pkg lark empy==3.3.4
-sudo apt-get install ros-humble-geographic-msgs
+sudo apt install -y ros-humble-geographic-msgs librange-v3-dev ros-humble-lanelet2
 ```
 
 ## Clone this repo
@@ -298,9 +298,11 @@ cd /path/to/autoware
 colcon build --packages-select $(colcon list | awk '{print $1}' | grep 'msgs$') --symlink-install
 
 colcon build --packages-select vehicle_cmd_gate planning_validator control_validator operation_mode_transition_manager --symlink-install
+
+colcon build --packages-select autoware_lint_common autoware_cmake autoware_utils lanelet2_extension lanelet2_extension_python --symlink-install
 ```
 
-It takes ~15 minutes to build these packages on 4-core CPU. 
+It takes ~20 minutes to build these packages on 4-core CPU. 
 
 ## Source the environment
 
