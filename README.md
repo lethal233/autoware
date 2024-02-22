@@ -291,15 +291,13 @@ ament_auto_package()
 
 ```sh
 
-cd /opt/ros/humble && source setup.bash
-
-cd /path/to/autoware
+cd /opt/ros/humble && source setup.bash && cd -
 
 colcon build --packages-select $(colcon list | awk '{print $1}' | grep 'msgs$') --symlink-install
 
 colcon build --packages-select vehicle_cmd_gate planning_validator control_validator operation_mode_transition_manager --symlink-install
 
-colcon build --packages-select autoware_lint_common autoware_cmake autoware_utils lanelet2_extension lanelet2_extension_python --symlink-install
+colcon build --packages-select autoware_lint_common autoware_cmake autoware_utils lanelet2_extension lanelet2_extension_python dummy_perception_publisher tier4_autoware_utils --symlink-install
 ```
 
 It takes ~20 minutes to build these packages on 4-core CPU. 
