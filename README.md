@@ -45,7 +45,10 @@ ament_auto_package()
 
 2. Modify `autoware/src/universe/autoware.universe/planning/planning_validator/package.xml` to:
 
-```xml
+<details>
+  <summary> Click me </summary>
+
+  ```xml
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
@@ -88,6 +91,9 @@ ament_auto_package()
 </package>
 
 ```
+</details>
+
+
 
 3. Modify `autoware/src/universe/autoware.universe/control/vehicle_cmd_gate/CMakeLists.txt` to:
 ```makefile
@@ -109,7 +115,10 @@ ament_package()
 
 4. Modify `autoware/src/universe/autoware.universe/control/vehicle_cmd_gate/package.xml` to:
 
-```xml
+<details>
+  <summary> Click me </summary>
+
+  ```xml
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
@@ -163,6 +172,8 @@ ament_package()
 
 ```
 
+</details>
+
 5. Modify `autoware/src/universe/autoware.universe/control/control_validator/CMakeLists.txt` to:
 ```makefile
 cmake_minimum_required(VERSION 3.22)
@@ -181,7 +192,11 @@ ament_package()
 ```
 
 6. Modify `autoware/src/universe/autoware.universe/control/control_validator/package.xml` to:
-```xml
+
+<details>
+  <summary> Click me </summary>
+
+  ```xml
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
@@ -224,6 +239,8 @@ ament_package()
   </export>
 </package>
 ```
+</details>
+
 
 7. Modify `autoware/src/universe/autoware.universe/control/operation_mode_transition_manager/CMakeLists.txt` to:
 ```makefile
@@ -243,7 +260,11 @@ ament_auto_package()
 
 8. Modify `autoware/src/universe/autoware.universe/control/operation_mode_transition_manager/package.xml` to:
 
-```xml
+
+<details>
+  <summary> Click me </summary>
+
+  ```xml
 <package format="3">
   <name>operation_mode_transition_manager</name>
   <version>0.1.0</version>
@@ -286,24 +307,24 @@ ament_auto_package()
 </package>
 ```
 
+</details>
+
 
 ## Build packages
 
 ```sh
 
-cd /opt/ros/humble && source setup.bash && cd -
+source /opt/ros/humble/setup.bash
 
-colcon build --packages-select $(colcon list | awk '{print $1}' | grep 'msgs$') --symlink-install
+colcon build --packages-select $(colcon list | awk '{print $1}' | grep 'msgs$') vehicle_cmd_gate planning_validator control_validator operation_mode_transition_manager autoware_lint_common autoware_cmake autoware_utils lanelet2_extension lanelet2_extension_python dummy_perception_publisher tier4_autoware_utils --symlink-install
 
-colcon build --packages-select vehicle_cmd_gate planning_validator control_validator operation_mode_transition_manager --symlink-install
-
-colcon build --packages-select autoware_lint_common autoware_cmake autoware_utils lanelet2_extension lanelet2_extension_python dummy_perception_publisher tier4_autoware_utils --symlink-install
 ```
 
 It takes ~20 minutes to build these packages on 4-core CPU. 
 
 ## Source the environment
 
+Under the directory `autoware`
 ```sh
 source install/setup.bash
 ```
