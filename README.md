@@ -6,7 +6,7 @@
 - package build dependency
 
 ```sh
-pip install catkin_pkg lark empy==3.3.4
+pip install catkin_pkg lark empy==3.3.4 numpy
 sudo apt install -y ros-humble-geographic-msgs librange-v3-dev ros-humble-lanelet2
 ```
 
