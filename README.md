@@ -1,9 +1,9 @@
 # Install Autoware-related messages on host machine
 
-## Requirements
+## Prerequisite
 
 - ROS2 humble
-- package build dependency
+- Install the package build dependencies
 
 ```sh
 pip install catkin_pkg lark empy==3.3.4 numpy
@@ -27,7 +27,7 @@ vcs import src < simulator.repos
 
 ## Modifications
 
-1. Modify `autoware/src/universe/autoware.universe/planning/planning_validator/CMakeLists.txt` to:
+1. Modify `./src/universe/autoware.universe/planning/planning_validator/CMakeLists.txt` to:
 
 ```makefile
 cmake_minimum_required(VERSION 3.22)
@@ -43,7 +43,7 @@ rosidl_generate_interfaces(
 ament_auto_package()
 ```
 
-2. Modify `autoware/src/universe/autoware.universe/planning/planning_validator/package.xml` to:
+2. Modify `./src/universe/autoware.universe/planning/planning_validator/package.xml` to:
 
 <details>
   <summary> Click me </summary>
@@ -95,7 +95,7 @@ ament_auto_package()
 
 
 
-3. Modify `autoware/src/universe/autoware.universe/control/vehicle_cmd_gate/CMakeLists.txt` to:
+3. Modify `./src/universe/autoware.universe/control/vehicle_cmd_gate/CMakeLists.txt` to:
 ```makefile
 cmake_minimum_required(VERSION 3.5)
 project(vehicle_cmd_gate)
@@ -113,7 +113,7 @@ ament_package()
 
 ```
 
-4. Modify `autoware/src/universe/autoware.universe/control/vehicle_cmd_gate/package.xml` to:
+4. Modify `./src/universe/autoware.universe/control/vehicle_cmd_gate/package.xml` to:
 
 <details>
   <summary> Click me </summary>
@@ -174,7 +174,7 @@ ament_package()
 
 </details>
 
-5. Modify `autoware/src/universe/autoware.universe/control/control_validator/CMakeLists.txt` to:
+5. Modify `./src/universe/autoware.universe/control/control_validator/CMakeLists.txt` to:
 ```makefile
 cmake_minimum_required(VERSION 3.22)
 project(control_validator)
@@ -191,7 +191,7 @@ ament_export_dependencies(rosidl_default_runtime)
 ament_package()
 ```
 
-6. Modify `autoware/src/universe/autoware.universe/control/control_validator/package.xml` to:
+6. Modify `./src/universe/autoware.universe/control/control_validator/package.xml` to:
 
 <details>
   <summary> Click me </summary>
@@ -242,7 +242,7 @@ ament_package()
 </details>
 
 
-7. Modify `autoware/src/universe/autoware.universe/control/operation_mode_transition_manager/CMakeLists.txt` to:
+7. Modify `./src/universe/autoware.universe/control/operation_mode_transition_manager/CMakeLists.txt` to:
 ```makefile
 cmake_minimum_required(VERSION 3.14)
 project(operation_mode_transition_manager)
@@ -319,8 +319,6 @@ source /opt/ros/humble/setup.bash
 colcon build --packages-select $(colcon list | awk '{print $1}' | grep 'msgs$') vehicle_cmd_gate planning_validator control_validator operation_mode_transition_manager autoware_lint_common autoware_cmake autoware_utils lanelet2_extension lanelet2_extension_python dummy_perception_publisher tier4_autoware_utils --symlink-install
 
 ```
-
-It takes ~20 minutes to build these packages on 4-core CPU. 
 
 ## Source the environment
 
