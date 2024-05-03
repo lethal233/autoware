@@ -7,6 +7,10 @@ repositories:
     type: git
     url: https://github.com/autowarefoundation/autoware_common.git
     version: 15d700bf0de00217dd5b9e711089ba53900d714c
+  core/autoware_internal_msgs:
+    type: git
+    url: https://github.com/autowarefoundation/autoware_internal_msgs.git
+    version: main
   core/autoware_adapi_msgs:
     type: git
     url: https://github.com/autowarefoundation/autoware_adapi_msgs.git
@@ -26,7 +30,7 @@ repositories:
   universe/external/tier4_autoware_msgs:
     type: git
     url: https://github.com/tier4/tier4_autoware_msgs.git
-    version: 0035a38240fb12192fc048e4b66a30a9e265cc91
+    version: 4a5f78b99dd1504a64d1571ff5da5c32b1c50bef
   universe/external/morai_msgs:
     type: git
     url: https://github.com/MORAI-Autonomous/MORAI-ROS2_morai_msgs.git
