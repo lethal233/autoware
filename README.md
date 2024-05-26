@@ -13,13 +13,13 @@ sudo apt install -y ros-humble-geographic-msgs librange-v3-dev ros-humble-lanele
 ## Clone this repo
 
 ```sh
-git clone -b msgs_install --single-branch https://github.com/lethal233/autoware.git
+git clone -b msgs_install --single-branch https://github.com/lethal233/autoware.git reduced_autoware
 ```
 
 ## import vcs repos
 
 ```sh
-cd autoware
+cd reduced_autoware
 mkdir src
 vcs import src < autoware.repos
 vcs import src < simulator.repos
@@ -43,7 +43,7 @@ rosidl_generate_interfaces(
 ament_auto_package()
 ```
 
-2. Modify `./src/universe/autoware.universe/planning/planning_validator/package.xml` to:
+2. Modify `./src/universe/.universe/planning/planning_validator/package.xml` to:
 
 <details>
   <summary> Click me </summary>
@@ -63,10 +63,10 @@ ament_auto_package()
   <author email="yutaka.shimizu@tier4.jp">Yutaka Shimizu</author>
 
   <buildtool_depend>ament_cmake_auto</buildtool_depend>
-  <!-- <buildtool_depend>autoware_cmake</buildtool_depend> -->
+  <!-- <buildtool_depend>_cmake</buildtool_depend> -->
   <build_depend>rosidl_default_generators</build_depend>
 
-  <depend>autoware_auto_planning_msgs</depend>
+  <depend>_auto_planning_msgs</depend>
   <!-- <depend>diagnostic_updater</depend> -->
   <depend>geometry_msgs</depend>
   <!-- <depend>motion_utils</depend> -->
@@ -74,13 +74,13 @@ ament_auto_package()
   <!-- <depend>planning_test_utils</depend> -->
   <!-- <depend>rclcpp</depend> -->
   <!-- <depend>rclcpp_components</depend> -->
-  <!-- <depend>tier4_autoware_utils</depend> -->
+  <!-- <depend>tier4__utils</depend> -->
   <!-- <depend>vehicle_info_util</depend> -->
   <depend>visualization_msgs</depend>
 
   <!-- <test_depend>ament_cmake_ros</test_depend>
   <test_depend>ament_lint_auto</test_depend>
-  <test_depend>autoware_lint_common</test_depend> -->
+  <test_depend>_lint_common</test_depend> -->
 
   <exec_depend>rosidl_default_runtime</exec_depend>
   <member_of_group>rosidl_interface_packages</member_of_group>
@@ -95,7 +95,7 @@ ament_auto_package()
 
 
 
-3. Modify `./src/universe/autoware.universe/control/vehicle_cmd_gate/CMakeLists.txt` to:
+3. Modify `./src/universe/.universe/control/vehicle_cmd_gate/CMakeLists.txt` to:
 ```makefile
 cmake_minimum_required(VERSION 3.5)
 project(vehicle_cmd_gate)
@@ -322,7 +322,7 @@ colcon build --packages-select $(colcon list | awk '{print $1}' | grep 'msgs$') 
 
 ## Source the environment
 
-Under the directory `autoware`
+Under the directory `reduced_autoware`
 ```sh
 source install/setup.bash
 ```
