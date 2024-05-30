@@ -1,4 +1,4 @@
-# Install Autoware-related messages on host machine
+# Reduced Installation of Autoware
 
 ## Prerequisite
 
@@ -7,7 +7,7 @@
 
 ```sh
 pip install catkin_pkg lark empy==3.3.4 numpy
-sudo apt install -y ros-humble-geographic-msgs librange-v3-dev ros-humble-lanelet2
+sudo apt install -y ros-humble-velodyne-msgs ros-humble-geographic-msgs librange-v3-dev ros-humble-lanelet2
 ```
 
 ## Clone this repo
