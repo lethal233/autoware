@@ -1,5 +1,9 @@
 # Reduced Installation of Autoware
 
+## What is this project about
+
+This project is a reduced version of Autoware Universe v1.0, which only contains all the msg and srv packages developed by Autoware developers. These packages are necessary for deserializing record message data. 
+
 ## Prerequisite
 
 - ROS2 humble
